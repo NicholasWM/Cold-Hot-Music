@@ -9,10 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.9",
+    "@emotion/react": "11",
+    "@emotion/styled": "11",
+    "@types/mapbox-gl": "^2.4.2",
     "axios": "^0.22.0",
+    "framer-motion": "4",
+    "mapbox-gl": "^2.5.1",
     "next": "11.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "^4.3.1",
+    "react-map-gl": "^6.1.17",
+    "react-query": "^3.26.0"
   },
   "devDependencies": {
     "@types/react": "17.0.28",
