@@ -1,127 +1,90 @@
-import type { GetServerSideProps, NextApiResponse, NextPage } from 'next'
-import { useEffect, useMemo, useState } from 'react'
-import { api } from '../services/api'
+import type { GetServerSideProps, NextPage } from 'next'
+import { useEffect, useState } from 'react'
 import {
   Box,
-  Flex,
-  Text,
   Stack,
-  Input,
   Wrap,
-  Icon
+  Button,
+  ButtonGroup,
+  IconButton,
+  Spinner,
 } from '@chakra-ui/react'
-
-import MapGL, {Marker, NavigationControl, GeolocateControl} from "react-map-gl";
-import { BsFillCursorFill } from "react-icons/bs";
-import { GeolocationResponse } from './api/geolocation';
-interface LocationProps {
-  latitude: number,
-  longitude: number
-}
+import {AiOutlineArrowLeft, AiOutlineArrowRight} from 'react-icons/ai'
+import { ItemInfo } from '../components/ItemInfo';
+import { Header } from '../components/Header';
+import { MapBox } from '../components/MapBox';
+import { useLocation } from '../contexts/Location';
 
 const Home: NextPage = () => {
-  const [locationData, setLocationData] = useState<GeolocationResponse>({})
-  const [viewport, setViewport] = useState({
-    longitude: -122.45,
-    latitude: 37.78,
-    zoom: 14
-  });
+  const {address} = useLocation()
 
-  async function handleGetLocation(latitude:number, longitude:number){
-    const {data} = await api.get<GeolocationResponse>('geolocation', {
-      params:{latitude, longitude}
-    })
-    
-    setLocationData(data)
-    // console.log(latitude, longitude)
-  }
-
-  useEffect(()=>{
-    navigator.geolocation.getCurrentPosition((pos)=> {
-      const currentLocation = {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      }
-      setViewport({...viewport, latitude: pos.coords.latitude, longitude: pos.coords.longitude})
-      api.get('geolocation', {
-        params:{...currentLocation}
-      }).then(({data}) => setLocationData(data))
-    })
-  },[])
   return (
-    <Box maxW="1440px" w="80vw" margin="5vh auto">
-      <Stack 
-        align="center" 
-        flexDir="row" 
-        justify="center" 
-        fontSize={['24px', '38px']}
-      >
-        <Text as="h1" p="5px" mt="8px" color={'blue.500'} >Cold</Text>
-        <Text as="h1" p="5px" color={'orange.400'}>Hot</Text>
-        <Text as="h1" p="5px" color={'gray.200'} >Music</Text>
-      </Stack>
-      <Text fontSize={['18px', '24px']} lineHeight="10" mb={['10']} align="center">Permita acesso à sua localização, para receber a playlist do clima.</Text>
-      <Wrap flexDir="row" align="center" justify="center">
-        <Box maxW="600px" maxH="400px" borderColor="gray.500" borderWidth="5px" flex={0.5} id="mapContainer">
-          <MapGL
-            width="30vw"
-            height="30vh"
-            {...viewport}
-            dragPan={true}
-            doubleClickZoom={true}
-            // mapOptions={{
-            //   scrollZoom:true,
-            //   interactive:true,
-            //   container: 'mapContainer',
-            //   touchPitch:true
-            // }}
-            mapStyle='mapbox://styles/mapbox/streets-v11'
-            mapboxApiAccessToken={"pk.eyJ1IjoibmljaG9sYXN3bSIsImEiOiJja3VvbTI0dno0Y21sMnBuejFvdWZ1YnBzIn0.M0eeh9lz2aCWopPCVMPehQ"}
-            onViewportChange={setViewport}
-          >
-            <GeolocateControl
-              style={{top:10, right:10}}
-              positionOptions={{enableHighAccuracy: true}}
-              trackUserLocation={true}
-              auto
-            />
-            <Marker
-              capturePointerMove={true} 
-              captureDrag={true} 
-              onDragEnd={({lngLat})=> {
-                handleGetLocation(lngLat[1], lngLat[0])
-              }} 
-              onDrag={({lngLat})=>setViewport({...viewport, longitude: lngLat[0], latitude: lngLat[1]})} 
-              latitude={viewport.latitude} 
-              longitude={viewport.longitude} 
-              draggable={true}
-            >
-              <Icon h={['30px']} w={['30px']} as={BsFillCursorFill} color="red.600"/>
+    <Box maxW="1440px" w="80vw" margin="1vh auto">
+      <Header/>
 
-            </Marker>
-            <NavigationControl style={{right: 10, top:10}} />
-          </MapGL>
-          <Box px="10px" py="10px" borderTopColor="gray.500" borderTopWidth="5px">
-            <Text>Latitude: {viewport.latitude}</Text>
-            <Text>Longitude: {viewport.longitude}</Text>
-          </Box>
-        </Box>
-        {/* <Text>{JSON.stringify(locationData)}</Text> */}
+      <Wrap mb={["70px"]} mt={["40px"]} flexDir="row" spacing={["70px"]} align="center" justify="center">
+        <MapBox/>
         <Stack 
-          width="30vw"
-          height="30vh"
+          width={["80vw","80vw","30vw"]}
+          height={["30vh"]}
+          align="center"
+          justify="center"
         >
-          <Text >{locationData?.selectedGenre}</Text>
-          <Text>{locationData?.temperature}</Text>
-          <Text>{locationData?.address?.country}</Text>
+          {!address?.city ? (
+              <Spinner size="xl" color="orange.400"/>
+          ) :(
+            <>
+              <ItemInfo title="Continente" label={address?.continent} />
+              <ItemInfo title="País" label={address?.country} />
+              <ItemInfo title="Estado" label={address?.state} />
+              <ItemInfo title="Cidade" label={address?.city} />
+            </>
+          )}
         </Stack>
       </Wrap>
+      <Stack 
+        my={["60px","30px"]}
+        width="100%"
+        align="center"
+        justify="center"
+        maxW="1250px"
+      >
+        {/* <Box borderColor="orange.400" borderWidth='1px' >
+              <ItemInfo title="Playlist Recomendada" label={locationData?.selectedGenre} />
+              <Wrap flexDir='column' justify="center" flexWrap="wrap" py={['10px']}>
+                {false
+                  ? <Spinner size="xl"/>
+                  : locationData?.playlist?.map(item => (
+                    <Flex flexDir='row'>
+                      <Box>
+                        <Image 
+                          w={['150px','150px','200px']}
+                          h={['150px','150px','200px']}
+                          src={item.images.coverart}
+                        />
+                        <Flex bg="gray.800" borderColor="orange.400" borderWidth="0 1px 1px 1px" flexDir={'row'} align="center" justify="space-between" p={['10px']}>
+                          <Box textAlign='left' ml={['2px']}>
+                            <Text fontSize={['12px','12px','15px']}>{item.music}</Text>
+                            <Text fontSize={['10px','10px','12px']}>{item.artist}</Text>
+                          </Box>
+                          <Avatar h={['20px','30px']} w={['20px','30px']} name={item.artist} src={item.avatar}/>
+                        </Flex>
+                      </Box>
+                    </Flex>
+                  ))                  
+                }
+              </Wrap>
+          </Box> */}
+          <ButtonGroup size="lg" variant="solid" my={['10px','20px']} px={['5px']}>
+            <IconButton isLoading={false} w={["30px","40px",'70px',"100px"]} colorScheme="orange" aria-label="Add to friends" icon={<AiOutlineArrowLeft />} />
+            <Button isLoading={false} w={["120px","200px","300px","400px","600px"]} mx={['3px']} colorScheme="orange" >Save</Button>
+            <IconButton isLoading={false} w={["30px","40px",'70px',"100px"]} colorScheme="orange" aria-label="Add to friends" icon={<AiOutlineArrowRight />} />
+          </ButtonGroup>
+      </Stack>
     </Box>
   )
 }
-
 export default Home
-
 export const getServerSideProps:GetServerSideProps = async ()=>{
 
   

@@ -1,29 +1,20 @@
-import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import { appid, WeatherData } from ".";
+import { appid, weatherApi, WeatherData, WeatherResponse } from ".";
 
-export interface WeatherResponse {
-    temperature: number,
+export interface WeatherTemperatureResponse {
+    temperature?: number,
     error?: any,
 }
-interface WeatherProps {
-    latitude: string | string[],
-    longitude: string | string[],
-}
-
-const weatherApi = axios.create({
-    baseURL: `http://api.openweathermap.org/data/2.5`,
-})
 
 export default async function GetLocationTemperature(
     req: NextApiRequest,
-    res: NextApiResponse<WeatherResponse>,
+    res: NextApiResponse<WeatherTemperatureResponse>,
 ) {
-    const { latitude, longitude }: WeatherProps = req.query
+    const { latitude, longitude } = req.query
     try {
         const { data } = await weatherApi.get<WeatherData>('weather', { params: { lat: latitude, lon: longitude, appid } })
 
-        return res.json({ temperature: Number(data?.main?.temp) - 273.15 })
+        return res.json({ temperature: Number((Number(data?.main?.temp.toFixed(2)) - 273.15).toFixed(2)) })
     } catch (error) {
         return res.json({ error })
     }

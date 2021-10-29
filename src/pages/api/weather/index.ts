@@ -1,12 +1,12 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-interface WeatherResponse {
+export interface WeatherResponse {
     data?: WeatherData,
     error?:any
 }
 
-interface WeatherProps {
+export interface WeatherProps {
     latitude:string | string[],
     longitude:string | string[],
 }
@@ -33,7 +33,7 @@ export default async function handleWeatherByLocation(
     req: NextApiRequest,
     res: NextApiResponse<WeatherResponse>,
 ){
-    const {latitude, longitude}:WeatherProps = req.query
+    const {latitude, longitude} = req.query
     try {
       const {data} = await weatherApi.get<WeatherData>('weather',{params:{lat:latitude, lon:longitude, appid}})
       return res.json({data})

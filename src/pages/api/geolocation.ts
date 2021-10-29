@@ -51,7 +51,7 @@ export default async function handler(
             const {latitude, longitude} = req.query
             const {data: positionStackResponse} = await positionStackApi.get<PositionStackResponse>('v1/reverse', {params:{access_key:process.env.POSITION_STACK_API_KEY,query:`${latitude},${longitude}`}})
             const {data: positionStackData} = positionStackResponse
-            res.status(200).json({
+            return res.status(200).json({
 
                 data:{
                     country: positionStackData[0]?.country,
@@ -62,7 +62,6 @@ export default async function handler(
                 },
             })
         } catch (error) {
-            console.log(error);
-            res.json({error})
+            return res.json({error})
         }
 }
