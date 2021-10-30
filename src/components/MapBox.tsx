@@ -67,7 +67,7 @@ export const MapBox = memo(function MapBoxComponent() {
                     trackUserLocation={true}
                     auto
                 />
-                <Marker
+                {/* <Marker
                     capturePointerMove={true}
                     captureDrag={true}
                     onDragEnd={({ lngLat }) => {
@@ -80,7 +80,7 @@ export const MapBox = memo(function MapBoxComponent() {
                 >
                     <Icon h={['30px']} w={['30px']} as={BsFillCursorFill} color="red.600" />
 
-                </Marker>
+                </Marker>  */}
                 <NavigationControl style={{ right: 10, top: 10 }} />
             </MapGL>
             <Box px="10px" py="10px" borderTopColor="gray.500" borderTopWidth="5px">
@@ -91,8 +91,6 @@ export const MapBox = memo(function MapBoxComponent() {
     ) : <></>
 })
 export const getServerSideProps: GetServerSideProps = async () => {
-
-
     return {
         props: {
 
