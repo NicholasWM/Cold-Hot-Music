@@ -1,36 +1,17 @@
-import type { GetServerSideProps, NextApiResponse, NextPage } from 'next'
-import { useEffect, useMemo, useState } from 'react'
+import type { GetServerSideProps } from 'next'
+import { memo, useEffect, useState } from 'react'
 import { api } from '../services/api'
 import {
     Box,
-    Flex,
     Text,
-    Stack,
-    Input,
-    Wrap,
     Icon,
-    useColorMode,
-    StatGroup,
-    Stat,
-    StatLabel,
-    StatNumber,
-    StatHelpText,
-    StatArrow,
-    UnorderedList,
-    ListItem,
-    Button,
-    ButtonGroup,
-    Avatar,
-    Image,
-    IconButton,
-    Spinner,
 } from '@chakra-ui/react'
 
 import MapGL, { Marker, NavigationControl, GeolocateControl } from "react-map-gl";
 import { BsFillCursorFill } from "react-icons/bs";
 import { GeolocationResponse } from '../pages/api/geolocation';
 
-export function MapBox() {
+export const MapBox = memo(function MapBoxComponent() {
     const [viewport, setViewport] = useState({
         longitude: -122.45,
         latitude: 37.78,
@@ -51,7 +32,7 @@ export function MapBox() {
             params: { latitude, longitude }
         })
 
-        setLocationData(data)
+        // setLocationData(data)
         // console.log(latitude, longitude)
     }
     useEffect(() => (window.onresize = updateSize), []);
@@ -106,7 +87,7 @@ export function MapBox() {
             </Box>
         </Box>
     ) : <></>
-}
+})
 export const getServerSideProps: GetServerSideProps = async () => {
 
 

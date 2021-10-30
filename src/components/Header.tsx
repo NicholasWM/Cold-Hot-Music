@@ -4,7 +4,7 @@ import {
     Flex,
     Icon,
     Button,
-    ButtonGroup,
+    Wrap,
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FaTemperatureLow } from 'react-icons/fa'
@@ -34,31 +34,34 @@ export const Header = memo(function HeaderComponent(){
                 <Icon color="orange.400" h="20px" w='20px' as={FaTemperatureLow}/>
                 <Text color="orange.400" ml={['10px']} fontSize={['14px']}>{temperature} Celsius</Text>
             </Flex>
-            <ButtonGroup style={{marginTop:'1.5rem'}}>
+            <Wrap mt={['20px']}  alignItems="center" justify="center" >
                 <Link href="/">
                     <Button
+                        m={'10px'}
                         disabled={pathname == '/'} 
                         onClick={()=>{setPathname('/')}} 
                         colorScheme="orange" 
                         _hover={{bg:'orange.600'}} 
                         bg="orange.500" 
-                        w="20vw">
+                        w={['20rem']}
+                    >
                             Home
                     </Button>
                 </Link>
                 <Link href="/savedPlaylists">
                     <Button 
+                        m={'10px'}
                         disabled={pathname == '/savedPlaylists'} 
                         onClick={()=>{setPathname('/savedPlaylists')}} 
                         colorScheme="orange" 
                         _hover={{bg:'orange.600'}} 
                         bg="orange.500" 
-                        w="20vw"
+                        w={['20rem']}
                     >
                         Playlists Salvas
                     </Button>
                 </Link>
-            </ButtonGroup>
+            </Wrap>
       </>
     )
 })
