@@ -50,17 +50,17 @@ export const Header = memo(function HeaderComponent(){
                             Home
                     </Button>
                 </Link>
-                <Link href="/savedPlaylists">
+                <Link href="/myplaylists">
                     <Button 
                         m={'10px'}
-                        disabled={pathname == '/savedPlaylists'} 
-                        onClick={()=>{setPathname('/savedPlaylists')}} 
+                        disabled={pathname == '/myplaylists'} 
+                        onClick={()=>{setPathname('/myplaylists')}} 
                         colorScheme={themeColors?.buttonColor}
                         _hover={{bg:`${themeColors?.hoverButton}`}} 
                         bg={themeColors?.temperature} 
                         w={['20rem']}
                     >
-                        Playlists Salvas
+                        Minhas Playlists
                     </Button>
                 </Link>
             </Wrap>

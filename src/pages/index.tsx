@@ -8,8 +8,10 @@ import {
   ButtonGroup,
   IconButton,
   Spinner,
+  Flex,
 } from '@chakra-ui/react'
 import { AiOutlineArrowRight } from 'react-icons/ai'
+import Head from 'next/head'
 import { ItemInfo } from '../components/ItemInfo';
 import { Header } from '../components/Header';
 import { MapBox } from '../components/MapBox';
@@ -27,7 +29,10 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Box maxW="1440px" w="80vw" margin="1vh auto">
+      <Head>
+        <title>Home | Cold Hot Music</title>
+      </Head>
+      <Flex flexDir="column" align="center" maxW="1440px" w="80vw" margin="1vh auto">
         <Header />
 
         <Wrap mb={["70px"]} mt={["40px"]} flexDir="row" spacing={["70px"]} align="center" justify="center">
@@ -88,7 +93,7 @@ const Home: NextPage = () => {
             <IconButton onClick={nextPage} isLoading={loadingNextPage} w={[ "120px", "150px", "200px", "300px"]} colorScheme={'blue'} bg='blue.500' aria-label="New Random List" icon={<AiOutlineArrowRight />} />
           </ButtonGroup>
         </Stack>
-      </Box>
+      </Flex>
     </>
   )
 }
