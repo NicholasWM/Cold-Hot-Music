@@ -4,7 +4,7 @@ import { ShazamResponse } from '../pages/api/shazam'
 import { WeatherTemperatureResponse } from '../pages/api/weather/temperature'
 
 export const api = axios.create({
-    baseURL:'http://localhost:3000/api'
+    baseURL:`/api`
 })
 
 export interface LocationResponse {
