@@ -4,15 +4,17 @@ import {
     Flex,
     Icon,
     Button,
-    ButtonGroup,
+    Wrap,
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FaTemperatureLow } from 'react-icons/fa'
 import { useLocation } from '../contexts/Location'
 import { memo, useEffect, useState } from 'react'
+import { useTheme } from '../contexts/Theme'
 
 export const Header = memo(function HeaderComponent(){
     const {temperature} = useLocation()
+    const {themeColors} = useTheme()
     const [pathname, setPathname] = useState('/')
     useEffect(()=>{
         setPathname(window.location.pathname)
@@ -31,34 +33,37 @@ export const Header = memo(function HeaderComponent(){
                 <Text as="h1" p="5px" color={'gray.200'} >Music</Text>
             </Stack>
             <Flex flexDir="row" justify="center" align="center">
-                <Icon color="orange.400" h="20px" w='20px' as={FaTemperatureLow}/>
-                <Text color="orange.400" ml={['10px']} fontSize={['14px']}>{temperature} Celsius</Text>
+                <Icon color={themeColors?.temperature} h="20px" w='20px' as={FaTemperatureLow}/>
+                <Text color={themeColors?.temperature} ml={['10px']} fontSize={['14px']}>{temperature} Celsius</Text>
             </Flex>
-            <ButtonGroup style={{marginTop:'1.5rem'}}>
+            <Wrap style={{marginTop:'20px'}}  alignItems="center" justify="center" >
                 <Link href="/">
                     <Button
+                        m={'10px'}
                         disabled={pathname == '/'} 
                         onClick={()=>{setPathname('/')}} 
-                        colorScheme="orange" 
-                        _hover={{bg:'orange.600'}} 
-                        bg="orange.500" 
-                        w="20vw">
+                        colorScheme={themeColors?.buttonColor}
+                        _hover={{bg:`${themeColors?.hoverButton}`}} 
+                        bg={themeColors?.temperature} 
+                        w={['20rem']}
+                    >
                             Home
                     </Button>
                 </Link>
                 <Link href="/savedPlaylists">
                     <Button 
+                        m={'10px'}
                         disabled={pathname == '/savedPlaylists'} 
                         onClick={()=>{setPathname('/savedPlaylists')}} 
-                        colorScheme="orange" 
-                        _hover={{bg:'orange.600'}} 
-                        bg="orange.500" 
-                        w="20vw"
+                        colorScheme={themeColors?.buttonColor}
+                        _hover={{bg:`${themeColors?.hoverButton}`}} 
+                        bg={themeColors?.temperature} 
+                        w={['20rem']}
                     >
                         Playlists Salvas
                     </Button>
                 </Link>
-            </ButtonGroup>
+            </Wrap>
       </>
     )
 })

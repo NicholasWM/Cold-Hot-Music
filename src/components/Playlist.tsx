@@ -1,7 +1,8 @@
-import { useDisclosure, ScaleFade, Button } from "@chakra-ui/react";
-import { ReactNode, useEffect, useState } from "react";
+import { useDisclosure, Button, Box } from "@chakra-ui/react";
+import { ReactNode, useEffect } from "react";
 import { useNotifier } from "../contexts/Notifier";
 import { usePlaylists } from "../contexts/Playlists";
+import { useTheme } from "../contexts/Theme";
 
 interface PlaylistProps {
     children: ReactNode,
@@ -9,29 +10,30 @@ interface PlaylistProps {
 }
 
 export function Playlist({ children, index }: PlaylistProps) {
-    const { isOpen, onToggle } = useDisclosure()
+    const { onOpen, onClose } = useDisclosure()
     const { removeSavedPlaylistByIndex } = usePlaylists()
     const { toggleNotifier } = useNotifier()
+    const { themeColors } = useTheme()
+
     useEffect(()=>{
-        onToggle()
+        onOpen()
     },[])
     return (
-        <ScaleFade delay={0.4} in={isOpen} initialScale={0.9} >
-            <div style={{ margin: "1.5rem", borderWidth: "1px" }}>
-                {children}
-                <Button
-                    onClick={() => {
-                        onToggle()
-                        removeSavedPlaylistByIndex(index)
-                        toggleNotifier({ message: 'Playlist Deletada com Sucesso!', status: 'success' })
-                    }}
-                    my="10px"
-                    colorScheme="red"
-                >
-                    Remover Playlist
-                </Button>
-            </div>
-        </ScaleFade>
-
+        <Box borderColor={themeColors?.borderColor} borderWidth='1px' style={{marginTop:'30px'}}>
+            {children}
+            <Button
+                size='lg'
+                w="80%"
+                onClick={() => {
+                    onClose()
+                    removeSavedPlaylistByIndex(index)
+                    toggleNotifier({ message: 'Playlist Deletada com Sucesso!', status: 'success' })
+                }}
+                my="10px"
+                colorScheme="red"
+            >
+                Remover Playlist
+            </Button>
+        </Box>
     )
 }
