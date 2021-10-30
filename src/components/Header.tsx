@@ -8,11 +8,10 @@ import {
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FaTemperatureLow } from 'react-icons/fa'
-
 import { useLocation } from '../contexts/Location'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
-export function Header(){
+export const Header = memo(function HeaderComponent(){
     const {temperature} = useLocation()
     const [pathname, setPathname] = useState('/')
     useEffect(()=>{
@@ -39,7 +38,7 @@ export function Header(){
                 <Link href="/">
                     <Button
                         disabled={pathname == '/'} 
-                        onClick={(e)=>{setPathname(e.view.location.pathname)}} 
+                        onClick={()=>{setPathname('/')}} 
                         colorScheme="orange" 
                         _hover={{bg:'orange.600'}} 
                         bg="orange.500" 
@@ -50,7 +49,7 @@ export function Header(){
                 <Link href="/savedPlaylists">
                     <Button 
                         disabled={pathname == '/savedPlaylists'} 
-                        onClick={(e)=>{setPathname(e.view.location.pathname)}} 
+                        onClick={()=>{setPathname('/savedPlaylists')}} 
                         colorScheme="orange" 
                         _hover={{bg:'orange.600'}} 
                         bg="orange.500" 
@@ -62,4 +61,4 @@ export function Header(){
             </ButtonGroup>
       </>
     )
-}
+})
