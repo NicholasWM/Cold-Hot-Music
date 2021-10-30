@@ -74,7 +74,7 @@ const Home: NextPage = () => {
                     toggleNotifier({status:"success", message:"Playlist Salva com Sucesso!"})
                   }}
                   isLoading={false}
-                  w={["60px", "100px", "150px", "200px", "300px"]}
+                  w={["120px", "150px", "200px", "300px"]}
                   mx={['3px']}
                   colorScheme="orange"
                 >
@@ -82,7 +82,7 @@ const Home: NextPage = () => {
                 </Button>
               )
             }
-            <IconButton onClick={nextPage} isLoading={loadingNextPage} w={["60px", "100px", "150px", "200px", "300px"]} colorScheme="orange" aria-label="New Random List" icon={<AiOutlineArrowRight />} />
+            <IconButton onClick={nextPage} isLoading={loadingNextPage} w={[ "120px", "150px", "200px", "300px"]} colorScheme="orange" aria-label="New Random List" icon={<AiOutlineArrowRight />} />
           </ButtonGroup>
         </Stack>
       </Box>

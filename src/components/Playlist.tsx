@@ -9,29 +9,26 @@ interface PlaylistProps {
 }
 
 export function Playlist({ children, index }: PlaylistProps) {
-    const { isOpen, onToggle } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const { removeSavedPlaylistByIndex } = usePlaylists()
     const { toggleNotifier } = useNotifier()
     useEffect(()=>{
-        onToggle()
+        onOpen()
     },[])
     return (
-        <ScaleFade delay={0.4} in={isOpen} initialScale={0.9} >
-            <div style={{ margin: "1.5rem", borderWidth: "1px" }}>
-                {children}
-                <Button
-                    onClick={() => {
-                        onToggle()
-                        removeSavedPlaylistByIndex(index)
-                        toggleNotifier({ message: 'Playlist Deletada com Sucesso!', status: 'success' })
-                    }}
-                    my="10px"
-                    colorScheme="red"
-                >
-                    Remover Playlist
-                </Button>
-            </div>
-        </ScaleFade>
-
+        <div style={{ margin: "1.5rem", borderWidth: "1px" }}>
+            {children}
+            <Button
+                onClick={() => {
+                    onClose()
+                    removeSavedPlaylistByIndex(index)
+                    toggleNotifier({ message: 'Playlist Deletada com Sucesso!', status: 'success' })
+                }}
+                my="10px"
+                colorScheme="red"
+            >
+                Remover Playlist
+            </Button>
+        </div>
     )
 }

@@ -5,13 +5,14 @@ import {
     Image,
     Avatar
 } from '@chakra-ui/react'
+import { memo } from 'react'
 import { Music } from '../pages/api/shazam'
 
 interface CardMusicProps {
     music: Music
 }
 
-export function CardMusic({ music }: CardMusicProps) {
+export const CardMusic = memo(function CardMusicComponent({ music }: CardMusicProps) {
     return (
         <Flex flexDir='row' align="center">
             <Box
@@ -32,4 +33,6 @@ export function CardMusic({ music }: CardMusicProps) {
             </Box>
         </Flex>
     )
-}
+})
+
+// export CardMusic
