@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-interface ShazamResponse {
+export interface ShazamResponse {
     error?:any
-    data?: Playlist[]
+    data: Music[]
 }
 
 type ImagesProps = {
@@ -38,18 +38,18 @@ interface ShazamResponseData {
         hits: TrackShazamData[]
     }
 }
-type Playlist = {
+export type Music = {
     artist: string,
     music: string,
     label: string,
     avatar: string,
     images: ImagesProps,
 }
-
 const shazamApi = axios.create({
     headers:{
         'x-rapidapi-host': 'shazam.p.rapidapi.com',
-        'x-rapidapi-key': 'a2dde32e40msh1a0c16b89e09f95p1bfa65jsne006b9c6a2ad'
+        'x-rapidapi-key': `${process.env.SHAZAM_API_KEY}`,
+        'Cache-Control': 's-maxage=86400'
     },
     baseURL:'https://shazam.p.rapidapi.com/',
 })
@@ -57,23 +57,29 @@ export default async function Shazam(
     req: NextApiRequest,
     res: NextApiResponse<ShazamResponse>,
 ) {
-    const {page, genre} = req.query
-    const {data} = await shazamApi.get<ShazamResponseData>('search', {
-        params: {
-            offset:page,
-            term: genre,
-            locale: 'en-US',
-            limit: 5,
-        }
-    })
-    return res.json({
-        data:data.tracks.hits.map(({track}):Playlist => ({
-            artist: track?.title,
-            music: track?.subtitle,
-            label: track?.share?.subject,
-            avatar: track?.share.avatar,
-            images: track?.images,
-
-        }))
-    })
+    try {
+        const {page, genre} = req.query
+        const {data} = await shazamApi.get<ShazamResponseData>('search', {
+            params: {
+                offset:page,
+                term: genre,
+                locale: 'en-US',
+                limit: 5,
+            }
+        })
+        return res.json({
+            data:data.tracks.hits.map(({track}):Music => ({
+                artist: track?.title,
+                music: track?.subtitle,
+                label: track?.share?.subject,
+                avatar: track?.share.avatar,
+                images: track?.images,
+            }))
+        })
+    } catch (error) {
+        return res.json({
+            data: [],
+            error
+        })        
+    }
 }

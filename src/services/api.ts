@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Address, GeolocationResponse } from '../pages/api/geolocation'
+import { ShazamResponse } from '../pages/api/shazam'
 import { WeatherTemperatureResponse } from '../pages/api/weather/temperature'
 
 export const api = axios.create({
@@ -30,5 +31,13 @@ export async function getWeather(latitude?: number, longitude?:number): Promise<
     const {data} = await api.get<WeatherTemperatureResponse>('weather/temperature', {
         params: {latitude, longitude}
     })
+    return data
+}
+
+export async function getPlaylist(page?: number, genre?:string): Promise<ShazamResponse> {
+    const {data} = await api.get<ShazamResponse>('shazam', {
+        params: {page, genre}
+    })
+    console.log(data)
     return data
 }
