@@ -2,8 +2,9 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { Music } from "../pages/api/shazam";
 import { getPlaylist } from "../services/api";
 import { useLocation } from "./Location";
+import { useTheme } from "./Theme";
 
-type Genres = 'rock' |'pop' |'classica' |'lofi'
+export type Genres = 'rock' |'pop' |'classica' |'lofi'
 interface PlaylistsContextData {
     getPlaylistByTemperature: (temperature:number)=>void,
     playlists?: Music[],
@@ -34,10 +35,15 @@ export default function PlaylistsProvider({children}:PlaylistsProviderProps):JSX
     const [hasPlaylist, setHasPlaylist] = useState(false)
     const [loadingNextPage, setLoadingNextPage] = useState(false)
     const {temperature} = useLocation()
+    const {toggleTheme} = useTheme()
 
     useEffect(()=>{
         getPlaylistByTemperature(temperature)
     },[temperature])
+
+    useEffect(()=>{
+        toggleTheme(selectedGenre)
+    },[selectedGenre])
 
     useEffect(()=>{
         const storagedCart = localStorage.getItem(`@ColdHotMusic:${selectedGenre}:SavedPlaylists`)

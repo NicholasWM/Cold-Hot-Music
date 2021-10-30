@@ -17,9 +17,11 @@ import { useLocation } from '../contexts/Location';
 import { usePlaylists } from '../contexts/Playlists';
 import { CardMusic } from '../components/CardMusic';
 import { useNotifier } from '../contexts/Notifier';
+import { useTheme } from '../contexts/Theme';
 
 const Home: NextPage = () => {
   const { address } = useLocation()
+  const { themeColors } = useTheme()
   const { toggleNotifier } = useNotifier()
   const { playlists, selectedGenre, hasPlaylist, nextPage, loadingNextPage, savePlaylist, savedPlaylists } = usePlaylists()
 
@@ -55,7 +57,7 @@ const Home: NextPage = () => {
           justify="center"
           maxW="1250px"
         >
-          <Box borderColor="orange.400" borderWidth='1px' >
+          <Box borderColor={themeColors?.borderColor || 'white'} borderWidth='1px' >
             <ItemInfo title="Playlist Recomendada" label={`Gênero: ${selectedGenre.toUpperCase()}`} />
             <Wrap flexDir='column' justify="center" flexWrap="wrap" py={['10px']}>
               {!hasPlaylist ? <Spinner size="xl" />
@@ -76,13 +78,14 @@ const Home: NextPage = () => {
                   isLoading={false}
                   w={["120px", "150px", "200px", "300px"]}
                   mx={['3px']}
-                  colorScheme="orange"
+                  colorScheme={"green"}
+                  bg={"green.500"}
                 >
                   Save
                 </Button>
               )
             }
-            <IconButton onClick={nextPage} isLoading={loadingNextPage} w={[ "120px", "150px", "200px", "300px"]} colorScheme="orange" aria-label="New Random List" icon={<AiOutlineArrowRight />} />
+            <IconButton onClick={nextPage} isLoading={loadingNextPage} w={[ "120px", "150px", "200px", "300px"]} colorScheme={'blue'} bg='blue.500' aria-label="New Random List" icon={<AiOutlineArrowRight />} />
           </ButtonGroup>
         </Stack>
       </Box>

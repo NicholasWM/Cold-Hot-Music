@@ -5,18 +5,21 @@ import { LocationProvider } from '../contexts/Location'
 import PlaylistsProvider from '../contexts/Playlists'
 import { NotifierProvider } from '../contexts/Notifier'
 import { Notifier } from '../components/Notifier'
+import { ThemeProvider } from '../contexts/Theme'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <NotifierProvider>
-        <LocationProvider>
-          <PlaylistsProvider>
-            <Component {...pageProps} />
-            <Notifier/>
-          </PlaylistsProvider>
-        </LocationProvider>
-      </NotifierProvider>
+      <ThemeProvider>
+        <NotifierProvider>
+          <LocationProvider>
+            <PlaylistsProvider>
+              <Component {...pageProps} />
+              <Notifier/>
+            </PlaylistsProvider>
+          </LocationProvider>
+        </NotifierProvider>
+      </ThemeProvider>
     </ChakraProvider>
   )
 }

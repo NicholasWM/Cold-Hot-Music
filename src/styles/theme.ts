@@ -1,6 +1,11 @@
 import { extendTheme } from '@chakra-ui/react'
 
 export const theme = extendTheme({
+    colors: {
+        orange: {
+            'rock':'#F23'
+        }
+    },
     fonts:{
         heading: 'Khand',
         body: 'Khand, sans-serif',
@@ -13,7 +18,6 @@ export const theme = extendTheme({
                 color: 'gray.50',
                 textAlign:'center',
             }
-
         }
     }
 })

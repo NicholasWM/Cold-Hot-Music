@@ -38,6 +38,5 @@ export async function getPlaylist(page?: number, genre?:string): Promise<ShazamR
     const {data} = await api.get<ShazamResponse>('shazam', {
         params: {page, genre}
     })
-    console.log(data)
     return data
 }
