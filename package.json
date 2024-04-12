@@ -13,7 +13,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "@types/mapbox-gl": "^2.4.2",
-    "axios": "^0.22.0",
+    "axios": "^0.28.0",
     "framer-motion": "4",
     "mapbox-gl": "^2.5.1",
     "next": "11.1.2",
